@@ -49,6 +49,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        //原因是html网页中混合了http和https的网络连接，这里会导致图片不显示，特此说明
+        webview.getSettings().setBlockNetworkImage(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //允许混合开发
+            webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+//        webView.getSettings().setDomStorageEnabled(true);
+        webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                //接受证书
+                handler.proceed();//接受证书
+            }
+        });
     }
 
     @OnClick({R.id.button_load, R.id.button_js})
